@@ -1,0 +1,9 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
+.task-list{
+    font-size: 20px;
+}
+.checkBox{
+    scale: 1.3;;
+}
