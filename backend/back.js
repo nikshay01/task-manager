@@ -26,26 +26,28 @@ async function connectDB() {
   // nnn();
   frontendData();
 }
-async function frontendData() {
-try {
-  const frontData =  await tasksCollection.findOne({name:'TaskNames'});
-  console.log("frontData:", frontData);
-  app.get('/receive/tasks/names',(req,res)=>{
-    res.send(frontData.progress)
-    console.log("data sent to: http://localhost:3000/receive/tasks/names");
-  })
-} catch (error) {
-  console.log("frontend data sending error:  ",error);
+function frontendData() {
+  try {
+    app.get("/receive/tasks/names", async (req, res) => {
+      const frontData = await tasksCollection.findOne({ name: "TaskNames" });
+      console.log("frontData:", frontData);
+      res.send(frontData.progress);
+      console.log("data sent to: http://localhost:3000/receive/tasks/names");
+    });
+  } catch (error) {
+    console.log("frontend data sending error:  ", error);
+  }
 }
 
-}
-// app.get('/receive/tasks/names') 
 connectDB();
 app.get("/", (req, res) => {
-  res.send("hlo"); 
+  res.send("hlo");
   frontendData();
+  console.log("frontend data function executed");
 });
-
+// app.get("/receive/tasks/names",(req,res)=>{
+//   // frontendData();
+// })
 app.post("/", async (req, res) => {
   console.log("recieved");
   console.log("data: ", req.body);
@@ -54,7 +56,7 @@ app.post("/", async (req, res) => {
     let dataSearch = await tasksCollection.findOne({ name: "TaskNames" });
     console.log("datasearch matchcount", dataSearch);
     if (dataSearch) {
-      UpdateData(dataSearch,data);
+      UpdateData(dataSearch, data);
     } else {
       CreateData(data);
     }
@@ -67,24 +69,27 @@ app.post("/", async (req, res) => {
 
 app.listen(PORT, () => console.log("server live at:", PORT));
 
-const UpdateData = async (data,d2) => {
+const UpdateData = async (data, d2) => {
   console.log("dataUpdate function executed");
 
-  let MAX=0;
-  const keys = Object.keys(data.progress)
-  keys.forEach(k => {
+  let MAX = 0;
+  const keys = Object.keys(data.progress);
+  keys.forEach((k) => {
     let num = parseInt(k.substring(4));
-    if(num>MAX)MAX=num;
+    if (num > MAX) MAX = num;
   });
-  const nextKey = `task${MAX+1}`;
+  const nextKey = `task${MAX + 1}`;
 
   try {
-  await tasksCollection.updateOne({ name: "TaskNames" },{$set:{[`progress.${nextKey}`]:d2.taskName}});
+    await tasksCollection.updateOne(
+      { name: "TaskNames" },
+      { $set: { [`progress.${nextKey}`]: d2.taskName } }
+    );
+    // UpdateData();
   } catch (error) {
     console.log("cannot update: ", error);
   }
 };
-
 
 const CreateData = async (data) => {
   console.log("dataCreate function  executed");
