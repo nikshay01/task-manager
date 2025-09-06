@@ -67,4 +67,9 @@ function taskCheckerButton(element, d) {
   bt.className = "task-checker-btn"
   bt.textContent = d[element];
   taskChecker.appendChild(bt);
+  bt.addEventListener("click",(event)=>{
+    bt.classList.toggle("clicked")
+    btnID = event.target.id;
+  })
 }
+
