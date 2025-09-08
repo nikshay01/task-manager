@@ -40,7 +40,6 @@ async function collectData() {
         // data.M1.
     })
     console.log(weekKeys,dayKeys);
-    // return dayKeys,weekKeys
   } catch (error) {
     console.log("server data fetching error: ", error);
   }
