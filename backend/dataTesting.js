@@ -29,17 +29,21 @@ async function collectData() {
   try {
     let data = await tasksCollection.findOne({});
     // console.log(data.W1.D1);
+    let M1Data=[]
     let weekKeys = Object.keys(data.M1);
     let dayKeys;
     weekKeys.shift();
     weekKeys.forEach((wk) => {
     //   console.log(data.M1[wk]);
       dayKeys = Object.keys(data.M1[wk])
-    });
-    dayKeys.forEach((dk)=>{
-        // data.M1.
+      dayKeys.forEach((dk)=>{
+       M1Data.push(data.M1[wk][dk].PROGRESS)
     })
+    console.log('\n');
+    });
+    console.log(M1Data);
     console.log(weekKeys,dayKeys);
+    // app.post('/month_data')
   } catch (error) {
     console.log("server data fetching error: ", error);
   }
