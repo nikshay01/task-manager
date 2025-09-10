@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Google Fit Steps Tracker</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+  </head>
+  <body>
+    <h1>Google Fit Steps Tracker</h1>
+
+    <div
+      id="g_id_onload"
+      data-client_id="301368350013-bq2o38onrphceiac06efr8okj3pk3f0m.apps.googleusercontent.com"
+      data-login_uri="http://127.0.0.1:8080/receive_token"
+      data-auto_prompt="false"
+    ></div>
+
+    <div
+      class="g_id_signin"
+      data-type="standard"
+      data-size="large"
+      data-theme="outline"
+      data-text="signin_with"
+      data-shape="rectangular"
+      data-logo_alignment="left"
+    ></div>
+
+    <h2>Steps (Last 7 Days):</h2>
+    <table border="1" id="stepsTable">
+      <tr>
+        <th>Date</th>
+        <th>Steps</th>
+      </tr>
+    </table>
+
+    <script>
+      function decodeJwtResponse(token) {
+        const base64Url = token.split(".")[1];
+        const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+        return JSON.parse(atob(base64));
+      }
+
+      function handleCredentialResponse(response) {
+        console.log("ID Token:", response.credential);
+
+        // Send ID Token to backend for exchange
+        fetch("http://127.0.0.1:3000/exchange_token", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ credential: response.credential }), // Send the ID token
+        })
+          .then((response) => response.json())
+          .then((data) => console.log("Backend response:", data))
+          .catch((err) => console.error("Backend error:", err));
+      }
+
+      window.handleCredentialResponse = handleCredentialResponse;
+
+      window.onload = () => {
+        google.accounts.id.initialize({
+          client_id:
+            "301368350013-bq2o38onrphceiac06efr8okj3pk3f0m.apps.googleusercontent.com",
+          callback: handleCredentialResponse,
+        });
+
+        google.accounts.id.renderButton(
+          document.querySelector(".g_id_signin"),
+          { theme: "outline", size: "large" }
+        );
+      };
+    </script>
+  </body>
+</html>
