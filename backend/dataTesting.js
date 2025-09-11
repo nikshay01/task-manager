@@ -41,6 +41,9 @@ async function collectData() {
     })
     console.log('\n');
     });
+    app.post('/monthdata',(req,res)=>{
+      
+    })
     console.log(M1Data);
     console.log(weekKeys,dayKeys);
     // app.post('/month_data')
