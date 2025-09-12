@@ -6,14 +6,14 @@ const PORT = 3000;
 app.use(express.json());
 app.use(cors());
 // DB things
-const uri = "mongodb://localhost:27017/";
+const uri = "mongodb+srv://realUser:vestige5586@task-manager.84cf9tg.mongodb.net/?retryWrites=true&w=majority&appName=task-manager";
 const client = new MongoClient(uri);
 let tasksCollection;
 
 async function connectDB() {
   try {
     await client.connect();
-    const db = client.db("taskDB");
+    const db = client.db("tasks");
     tasksCollection = db.collection("taskName");
     console.log(" Connected to MongoDB");
   } catch (err) {

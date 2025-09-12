@@ -1,4 +1,17 @@
+// import { json } from "body-parser";
+
 const ctx = document.getElementById('myChart').getContext('2d');
+
+fetch("http://localhost:5000/monthdata", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body:JSON.stringify({indicator:"monthData"}),
+})
+  .then((res) => res.json())
+  .then((data) => {
+    console.log("message: ", data);
+  })
+  .catch((err) => console.log(err));
 
 const myChart = new Chart(ctx, {
   type: 'bar',
