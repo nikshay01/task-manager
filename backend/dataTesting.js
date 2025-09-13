@@ -85,6 +85,6 @@ function collectData() {
       }
     });
   } catch (error) {
-    // console.log("❌ Server data fetching error:", error);
+    console.log("❌ Server data fetching error:", error);
   }
 }
