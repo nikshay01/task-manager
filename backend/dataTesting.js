@@ -88,14 +88,3 @@ function collectData() {
     // console.log("❌ Server data fetching error:", error);
   }
 }
-//yes it is deffinetly not up to date
-//like this
-//and this
-//and 
-//when
-// i
-// remove 
-// this 
-// it 
-// might 
-// get updated
